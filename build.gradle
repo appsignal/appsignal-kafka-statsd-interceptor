@@ -1,0 +1,50 @@
+buildscript {
+  ext.kotlin_version = '1.0.2'
+  ext.kafka_version = '0.10.0.0-cp1'
+  ext.statsd_version = '3.0.1'
+  ext.junit_version = '4.11'
+
+  repositories {
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+  }
+}
+
+apply plugin: 'kotlin'
+
+defaultTasks 'build'
+
+repositories {
+  mavenCentral()
+  maven {
+    url = 'http://packages.confluent.io/maven/'
+  }
+}
+
+dependencies {
+  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  compile "org.apache.kafka:kafka-clients:$kafka_version"
+  compile "com.timgroup:java-statsd-client:$statsd_version"
+  testCompile "junit:junit:$junit_version"
+  testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+}
+
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.13'
+}
+
+jar {
+  // Include all dependencies in the jar
+  from {
+    configurations.compile.collect {
+      it.isDirectory() ? it : zipTree(it)
+    }
+    configurations.runtime.collect {
+      it.isDirectory() ? it : zipTree(it)
+    }
+  }
+}

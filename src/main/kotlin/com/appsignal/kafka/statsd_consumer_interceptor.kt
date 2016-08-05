@@ -9,6 +9,7 @@ import org.apache.kafka.clients.consumer.ConsumerInterceptor
 import org.apache.kafka.common.Configurable
 import org.apache.kafka.common.TopicPartition
 import org.apache.kafka.common.config.ConfigDef
+
 import org.apache.kafka.clients.consumer.OffsetAndMetadata
 import org.apache.kafka.clients.consumer.ConsumerRecords
 import org.apache.kafka.clients.consumer.ConsumerRecord
@@ -20,7 +21,6 @@ class StatsdConsumerInterceptor : ConsumerInterceptor<Any, Any> {
   var hostname: String? = null
 
   override fun configure(configs: Map<String,*>) {
-    log.info("Configs: ${configs}")
     var ip = InetAddress.getLocalHost();
     hostname = ip.getHostName();
 
@@ -33,10 +33,10 @@ class StatsdConsumerInterceptor : ConsumerInterceptor<Any, Any> {
   }
 
   override fun onConsume(records: ConsumerRecords<Any, Any>):ConsumerRecords<Any, Any> {
-    // Send a globla count for this host
+    // Send global count for this host
     statsd!!.count("kafka.consumer.host.${hostname!!}.messages", records.count().toLong())
 
-    // Send a count and lag for each partition/topic
+    // Send count/lag for each topic/partition
     for (partition in records.partitions()) {
       var count = records.records(partition).count().toLong()
 
@@ -60,7 +60,7 @@ class StatsdConsumerInterceptor : ConsumerInterceptor<Any, Any> {
   }
 
   override fun close() {
-    // Nothing to do
+    statsd!!.stop()
   }
 
   companion object {

@@ -38,7 +38,7 @@ class StatsdProducerInterceptor : ProducerInterceptor<Any, Any> {
   override fun onAcknowledgement(metadata: RecordMetadata, exception: Exception?) {
     statsd!!.incrementCounter("kafka.producer.host.${hostname!!}.messages")
     statsd!!.incrementCounter("kafka.producer.topic.${metadata.topic()}.messages")
-    statsd!!.incrementCounter("kafka.producer.topic.${metadata.topic()}.partition.${metadata.partition()}.messages")
+    statsd!!.incrementCounter("kafka.producer.partition.${metadata.topic()}.partition.${metadata.partition()}.messages")
   }
 
   override fun close() {

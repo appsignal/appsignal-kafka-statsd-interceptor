@@ -41,14 +41,14 @@ class StatsdConsumerInterceptor : ConsumerInterceptor<Any, Any> {
       var count = records.records(partition).count().toLong()
 
       statsd!!.count("kafka.consumer.topic.${partition.topic()}.messages", count)
-      statsd!!.count("kafka.consumer.topic.${partition.topic()}.partition.${partition.partition()}.messages", count)
+      statsd!!.count("kafka.consumer.partition.${partition.topic()}.partition.${partition.partition()}.messages", count)
 
       // Calculate the lag time, only use the first record sice it's the oldest in the queue?
       if (!records.isEmpty()) {
         var lag = System.currentTimeMillis() - records.first().timestamp()
 
         statsd!!.recordExecutionTime("kafka.consumer.topic.${partition.topic()}.lag", lag)
-        statsd!!.recordExecutionTime("kafka.consumer.topic.${partition.topic()}.partition.${partition.partition()}.lag", lag)
+        statsd!!.recordExecutionTime("kafka.consumer.partition.${partition.topic()}.partition.${partition.partition()}.lag", lag)
       }
     }
 

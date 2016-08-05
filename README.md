@@ -55,3 +55,9 @@ consumer.interceptor.config.statsd.host=8125
 consumer.interceptor.statsd.prefix=kafka
 
 ```
+
+## Package
+
+This package is published here: https://bintray.com/thijsc/AppSignal/appsignal-kafka-statsd-interceptor
+
+To upload a new version change the version in `build.gradle` and run `gradle bintrayUpload`.

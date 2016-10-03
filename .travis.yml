@@ -1,0 +1,9 @@
+language: java
+
+before_install:
+  - git clone https://github.com/apache/kafka.git
+  - cd kafka && git checkout trunk && git reset --hard && git pull
+  - cd kafka && gradle clients:install
+  - cd kafka && gradle connect:api:install
+  - cd kafka && gradle connect:json:install
+  - cd kafka && gradle streams:install

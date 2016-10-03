@@ -1,5 +1,7 @@
 # Kafka StatsD Interceptor
 
+[![Build Status](https://travis-ci.org/appsignal/appsignal-kafka-statsd-interceptor.svg?branch=master)](https://travis-ci.org/appsignal/appsignal-kafka-statsd-interceptor)
+
 This project attempts to create a Kafka Interceptor that sends metrics to StatsD.
 
 https://cwiki.apache.org/confluence/display/KAFKA/KIP-42%3A+Add+Producer+and+Consumer+Interceptors

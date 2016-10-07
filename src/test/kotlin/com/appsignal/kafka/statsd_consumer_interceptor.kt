@@ -45,11 +45,12 @@ class StatsdConsumerInterceptorTest : ShouldSpec() {
       server.waitForMessage(5);
 
       var messages = server.messagesReceived
-      println(messages.first())
 
       messages should haveSize(1)
-      messages.contains("kafka.consumer.host.Roberts-MacBook-Pro.local.messages:1|c") shouldBe true
-      messages should containInAnyOrder("kafka.consumer.host.Roberts-MacBook-Pro.local.messages:1|c")
+
+      val message = messages.first()
+      message.contains("kafka.consumer.host") shouldBe true
+      message.contains(":1|c") shouldBe true
     }
   }
 }
